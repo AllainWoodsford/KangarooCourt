@@ -29,4 +29,20 @@ public class KCCaseSummary : MonoBehaviour
    ProsecWitnessTMpro,
    MatterNumberTMpro
    ;
+
+   public void HideCaseSummaryObjects(){
+      DefendantTextObject.SetActive(false);
+    
+   ProsecutorTextObject.SetActive(false);
+   AccusationTextObject.SetActive(false);
+   MatterTitleTextObject.SetActive(false);
+   StatusTextObject.SetActive(false);
+   CaseStatusText.SetActive(false);
+   WitnessLabelTextObject.SetActive(false);
+   WitnessDefenceText.SetActive(false);
+   WitnessProsecLabelTextObject.SetActive(false);
+   WitnessProsecutorText.SetActive(false);
+   NotGuiltyButton.SetActive(false);
+      GuilityButton.SetActive(false);
+   }
 }

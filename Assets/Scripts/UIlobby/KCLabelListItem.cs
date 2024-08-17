@@ -10,8 +10,11 @@ public class KCLabelListItem : MonoBehaviour
     public TextMeshProUGUI label = null;
 
     public void DeleteFromList(){
+            KCAudioManager.instance.PlaySFX( KCStaticEnums.SoundNames.click);
         if(list == KCStaticEnums.PopulateableLists.people){
-            KCGameManager.instance.RemoveFromPeopleList(id);
+            KCGameManager.instance.RemovePeopleByName(label.text);
+            KCLobbyManager.instance.UpdateSizeRect(list);
+            
         }else{
             KCGameManager.instance.RemoveFromMattersList(id);
         }

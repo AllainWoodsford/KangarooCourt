@@ -9,6 +9,10 @@ public static class KCStaticEnums
     none,mainMenu,lobby,court
   }
 
+  public enum Verdict{
+    none,missTrial,Guilty,NotGuilty
+  }
+
   public enum CourtState{
     none,init,end,newCase,closeCase,
     defendantArg,
@@ -16,7 +20,13 @@ public static class KCStaticEnums
     witnessDef,
     witnessProsec,
     closingDefArg,
-    closingProsecArg
+    closingProsecArg,
+    jury,
+    hearing
+  }
+  public static string PATH_RESOURCES_SFX = "SFX/";
+  public enum SoundNames {
+    none,lawAndOrder,click,attention,error,murmur
   }
 
   public enum PopulateableLists{
@@ -31,4 +41,5 @@ public static class KCStaticEnums
   public static int TIMER_DEFENDANT_CLOSING_ARGUMENT = 15;
   public static int TIMER_PROSECUTOR_CLOSING_ARGUMENT = 15;
   public static int COUNTER_MAXIMUM_TRIALS_DEFAULT = 10;
+  public static int TIMER_JURY_TIME = 30;
 }

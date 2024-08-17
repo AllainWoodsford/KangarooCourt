@@ -8,8 +8,5 @@ public class KCMatters : ScriptableObject
     public string MatterTitle = string.Empty;
     public string MatterSentancing = string.Empty;
 
-    public KCMatters(string title, string sentancing){
-        MatterTitle = title;
-        MatterSentancing = sentancing;
-    }
+   
 }

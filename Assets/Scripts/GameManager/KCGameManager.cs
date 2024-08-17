@@ -12,7 +12,7 @@ public class KCGameManager : MonoBehaviour
     [Header("Matters")]
     public List<KCMatters> Matters = new List<KCMatters>();
     public List<KCMatters> DefaultMatters = new List<KCMatters>();
-
+    public KCMatters BaseMatter = null;
     [Header("Misc")]
     private bool isLoading = false;
     public int Defendant_Arg = 0;
@@ -21,6 +21,7 @@ public class KCGameManager : MonoBehaviour
     public int Prosecution_Arg = 0;
     public int Prosecution_Witness = 0;
     public int Prosecution_Closing = 0;
+    public int Jury_Time = 0;
     public int Trials_Max = 0;
     public bool IsVisistedLobby = false;
     public GameObject ErrorMessage = null;
@@ -67,6 +68,23 @@ public class KCGameManager : MonoBehaviour
    /// 
    /// </summary>
    /// <param name="id"></param>
+   /// 
+   public void RemovePeopleByName(string name){
+    try{
+        int removal = -1;
+        for(int i  =0 ; i < People.Count ; i++){
+            if(name == People[i]){
+                removal = i;
+                break;
+            }
+        }
+        if(removal != -1){
+            People.RemoveAt(removal);
+        }
+    }catch{
+
+    }
+   }
      public void RemoveFromPeopleList(int id){
         try{
             People.RemoveAt(id);
@@ -92,6 +110,7 @@ public class KCGameManager : MonoBehaviour
     /// <param name="name"></param>
     public void AddToPeopleList(string name){
         if(People.Contains(name)){
+              KCGameManager.instance.CreateErrorMessage("Matching name in the list!", 2);
             return;
         }
         People.Add(name);
@@ -104,7 +123,10 @@ public class KCGameManager : MonoBehaviour
     /// <param name="sentancing"></param>
     public void AddToMatterList(string name, string sentancing){
         try{
-            KCMatters mat = new KCMatters(name,sentancing);
+           
+            KCMatters mat = ScriptableObject.Instantiate<KCMatters>(BaseMatter);
+            mat.MatterTitle = name;
+            mat.MatterSentancing = sentancing;
             Matters.Add(mat);  
         }catch{
 
@@ -123,7 +145,8 @@ public class KCGameManager : MonoBehaviour
         int prosecution_arg,
         int prosecution_witness,
         int prosecution_closing,
-        int trials_max
+        int trials_max,
+        int jury_time
     ){
         Defendant_Arg = defendant_arg;
         Defendant_Witness = defendant_witness;
@@ -132,6 +155,7 @@ public class KCGameManager : MonoBehaviour
         Prosecution_Witness = prosecution_witness;
         Prosecution_Closing = prosecution_closing;
         Trials_Max = trials_max;
+        Jury_Time = jury_time;
     }
 
    #endregion
@@ -143,6 +167,7 @@ public class KCGameManager : MonoBehaviour
         
             KCErrorMessage er = go.GetComponent<KCErrorMessage>();
             er.InitMe(msg,time);
+                KCAudioManager.instance.PlaySFX( KCStaticEnums.SoundNames.error);
         }catch{
 
         }

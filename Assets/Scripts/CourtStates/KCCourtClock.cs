@@ -8,24 +8,48 @@ public class KCCourtClock : MonoBehaviour
    public TextMeshProUGUI ClockTimerText;
   
    public int expectedMaxTime = 0;
-
+  public bool ClockIsRunning = false;
    public void InitClock(int maxTime){
+    
     KCCourtManager.instance.waiting = true;
     expectedMaxTime = maxTime;
     StartCoroutine(TickClock());
    }
 
    IEnumerator TickClock(){
+    ClockIsRunning = true;
     yield return new WaitForSeconds(1);
+    ClockIsRunning = false;
     expectedMaxTime --;
+    try{
+      
     if(expectedMaxTime > 0){
+
         ClockTimerText.text = GetClockString();
         StartCoroutine(TickClock());
     }
     else{
          ClockTimerText.text = "00:00";
-         KCCourtManager.instance.waiting = false;
+        KCCourtManager.instance.waiting = false;
+        if(KCCourtManager.instance.MyCourtState.MyState == KCStaticEnums.CourtState.jury && KCCourtManager.instance.awaitingJury){
+          KCCourtManager.instance.PressVerdictButton( 1);
+        }else if(KCCourtManager.instance.MyCourtState.MyState == KCStaticEnums.CourtState.hearing){
+          KCCourtManager.instance.ProceedWithCasePressed(true);
+        }
+         
+
     }
+    }catch{
+      StartCoroutine(TickClock());
+    }
+    
+   }
+
+   public void PauseClock(){
+    StopCoroutine(TickClock());
+    expectedMaxTime = 0;
+        ClockTimerText.color = Color.white;
+    
    }
 
    private string GetClockString(){
@@ -40,7 +64,9 @@ public class KCCourtClock : MonoBehaviour
     {
           ClockTimerText.color = Color.white;
     }
-     return string.Concat(minutes,":",seconds);
+     string minsString =  minutes <= 9 ? ("0" + minutes.ToString()): minutes.ToString();
+     string secondString = seconds <= 9 ? ("0" + seconds.ToString()) : seconds.ToString();
+     return string.Concat(minsString,":", secondString );
    }
 
 }
