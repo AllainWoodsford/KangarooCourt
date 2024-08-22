@@ -8,7 +8,7 @@ public class KCCourtClock : MonoBehaviour
    public TextMeshProUGUI ClockTimerText;
   
    public int expectedMaxTime = 0;
-  public bool ClockIsRunning = false;
+
    public void InitClock(int maxTime){
     
     KCCourtManager.instance.waiting = true;
@@ -17,9 +17,9 @@ public class KCCourtClock : MonoBehaviour
    }
 
    IEnumerator TickClock(){
-    ClockIsRunning = true;
+
     yield return new WaitForSeconds(1);
-    ClockIsRunning = false;
+  
     expectedMaxTime --;
     try{
       
@@ -31,7 +31,7 @@ public class KCCourtClock : MonoBehaviour
     else{
          ClockTimerText.text = "00:00";
         KCCourtManager.instance.waiting = false;
-        if(KCCourtManager.instance.MyCourtState.MyState == KCStaticEnums.CourtState.jury && KCCourtManager.instance.awaitingJury){
+        if(KCCourtManager.instance.MyCourtState.MyState == KCStaticEnums.CourtState.jury){
           KCCourtManager.instance.PressVerdictButton( 1);
         }else if(KCCourtManager.instance.MyCourtState.MyState == KCStaticEnums.CourtState.hearing){
           KCCourtManager.instance.ProceedWithCasePressed(true);
