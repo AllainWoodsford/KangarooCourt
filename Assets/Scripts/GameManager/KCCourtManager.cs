@@ -9,7 +9,7 @@ public class KCCourtManager : MonoBehaviour
 {
     public List<string> JudgeRoosStatements = new List<string>();
     public static KCCourtManager instance = null;
-    public bool busy,waiting,awaitingJury = false; //waiting is for the timed events, busy is for Roo's statmetns
+    public bool busy,waiting = false; //waiting is for the timed events, busy is for Roo's statmetns
     private int judgeRooStringPositioning = 0;
     private float timeSliceJudgeRoo,timeSliceJudgeRooStatementLong = 0;
     private string judgeRooStatement = string.Empty;
@@ -82,17 +82,16 @@ public class KCCourtManager : MonoBehaviour
             MyState = MyCourtState.MyState;
               StartCoroutine(CheckStateRun());
              try{
-                 if(!MyCourtState.StateCompleted && !awaitingJury){
+                 if(!MyCourtState.StateCompleted){
                     ProcessCourtState();
                      
                      
                  }
                  else{
-                    if(!awaitingJury){
+                
                         MyCourtState = ScriptableObject.Instantiate( MyCourtState.NextState);
                         MyCourtState.InitialiseCourtState();
-                    }
-                
+    
             }
              }
             catch{
@@ -242,7 +241,7 @@ public class KCCourtManager : MonoBehaviour
                 if(MyClock.ClockIsRunning){
                     MyClock.PauseClock();
                 }
-                awaitingJury = true;
+              
                   KCAudioManager.instance.PlaySFX( KCStaticEnums.SoundNames.attention);
                     MyCourtState.StateCompleted = false;
                      Debug.Log("Jury");
@@ -446,7 +445,7 @@ public class KCCourtManager : MonoBehaviour
     public void PressVerdictButton(int i){
         CaseSummaryScript.GuilityButton.SetActive(false);
         CaseSummaryScript.NotGuiltyButton.SetActive(false);
-        awaitingJury = false;
+
         if(MyCurrentCaseVerdict != KCStaticEnums.Verdict.none){
                 KCAudioManager.instance.PlaySFX( KCStaticEnums.SoundNames.error);
             return;
